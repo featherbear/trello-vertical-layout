@@ -1,5 +1,5 @@
 /* #board.layout-trello-vertical,*/
-#board {
+#board:not(.hide).x-vertical {
     overflow-x: hidden;
     overflow-y: auto;
     display: flex;
@@ -8,11 +8,11 @@
     flex-wrap: wrap;
 }
 
-#board .list-wrapper {
+#board:not(.hide).x-vertical .list-wrapper {
     margin: 0 0 10px 10px;
     height: auto;
 }
 
-#board .js-list-content {
+#board:not(.hide).x-vertical .js-list-content {
     max-height: 40vh;
 }
