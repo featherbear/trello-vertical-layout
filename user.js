@@ -9,6 +9,7 @@ module.exports = (config, Ferdium) => {
   let lblBtnToggle = document.createElement('span')
   lblBtnToggle.className = "board-header-btn-text"
   lblBtnToggle.innerText = "Toggle layout"
+  lblBtnToggle.style.userSelect = "none"
   lblBtnToggle.style.paddingRight = "0"
   btnToggle.appendChild(lblBtnToggle)
 
@@ -37,15 +38,15 @@ module.exports = (config, Ferdium) => {
     }
   }
 
-  waitForTarget('.js-board-views-switcher', (target) => {
-    waitForTarget('.mod-board-name', target => target.parentElement.insertBefore(btnToggle, target.nextSibling))
+  waitForTarget('[aria-label="Star or unstar board"]', (target) => {
+    waitForTarget('[aria-label="Board name"]', target => target.parentElement.insertBefore(btnToggle, target.nextSibling))
 
     localStorage.setItem(key, document.querySelector('#board').classList.toggle(key, localStorage.getItem(key) === "true"))
 
     new MutationObserver((mutationList, observer) => {
       for (const mutation of mutationList) {
         if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') continue
-        if (mutation.target.dataset.testid !== 'view-switcher-button-board') continue
+        // if (mutation.target.dataset.testid !== 'view-switcher-button-board') continue
 
         let { target } = mutation;
 
