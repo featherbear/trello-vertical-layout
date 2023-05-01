@@ -39,7 +39,7 @@ module.exports = (config, Ferdium) => {
   }
 
   waitForTarget('[aria-label="Star or unstar board"]', (target) => {
-    waitForTarget('[aria-label="Board name"]', target => target.parentElement.insertBefore(btnToggle, target.nextSibling))
+    waitForTarget('.mod-board-name', target => target.parentElement.insertBefore(btnToggle, target.nextSibling))
 
     localStorage.setItem(key, document.querySelector('#board').classList.toggle(key, localStorage.getItem(key) === "true"))
 
