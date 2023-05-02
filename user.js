@@ -28,18 +28,36 @@ module.exports = (config, Ferdium) => {
   //
 
   function waitForTarget(selector, cb) {
-    let target = document.querySelector(selector)
-    if (!target) {
-      console.log("Didn't see target", selector, "Retrying in 500ms");
-      setTimeout(() => waitForTarget(selector, cb), 500)
-    } else {
-      console.log('Found target', selector, target);
-      cb(target)
+    let shouldRun = true
+
+    function cancelFn() {
+      shouldRun = false
     }
+
+    function check() {
+      if (!shouldRun) return
+
+      let target = document.querySelector(selector)
+      if (!target) {
+        console.log("Didn't see target", selector, "Retrying in 500ms");
+        setTimeout(check, 500)
+      } else {
+        console.log('Found target', selector, target);
+        cb(target)
+      }
+    }
+
+    setTimeout(check, 500)
+    return cancelFn
   }
 
   waitForTarget('[aria-label="Star or unstar board"]', (target) => {
-    waitForTarget('.mod-board-name', target => target.parentElement.insertBefore(btnToggle, target.nextSibling))
+    const addButton = target => target.parentElement.insertBefore(btnToggle, target.nextSibling)
+    let targets = ['.mod-board-name', '[aria-label="Board name"]']
+    let cancelFns = targets.map(target => waitForTarget(target, (...args) => {
+      addButton(...args)
+      cancelFns.map(cancelFn => cancelFn())
+    }))
 
     localStorage.setItem(key, document.querySelector('#board').classList.toggle(key, localStorage.getItem(key) === "true"))
 
