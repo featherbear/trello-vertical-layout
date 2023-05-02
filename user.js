@@ -56,7 +56,7 @@ module.exports = (config, Ferdium) => {
     let targets = ['.mod-board-name', '[aria-label="Board name"]']
     let cancelFns = targets.map(target => waitForTarget(target, (...args) => {
       addButton(...args)
-      cancelFns.map(cancelFn => cancelFn())
+      cancelFns.map(cancelFn)
     }))
 
     localStorage.setItem(key, document.querySelector('#board').classList.toggle(key, localStorage.getItem(key) === "true"))
